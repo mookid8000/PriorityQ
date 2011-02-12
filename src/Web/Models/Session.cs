@@ -28,8 +28,10 @@ namespace Web.Models
 
         public virtual int QuestionCount { get; set; }
 
-        public Location Location { get; set; }
+        public virtual Location Location { get; set; }
 
-        public string CreatedBy { get; set; }
+        public virtual string CreatedBy { get; set; }
+
+        public virtual DateTime ExpirationTime { get; set; }
     }
 }

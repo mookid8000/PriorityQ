@@ -80,8 +80,11 @@ namespace Web.Repositories
             sessionCollection.Update(crit, op, false, false);
         }
 
-        public IList<SessionHeadline> GetAllSessions(int first, int count)
+        public IList<SessionHeadline> GetAllSessions(int first, int count, DateTime expirationTime)
         {
+            var crit = new Expando();
+            crit["ExpirationTime"] = Q.GreaterOrEqual(expirationTime);
+
             var fields = new Expando();
             fields["_id"] = 1;
             fields["Headline"] = 1;
@@ -89,7 +92,7 @@ namespace Web.Repositories
 
             return mongoSession
                 .GetCollection<Session>()
-                .Find(new Expando(), new Expando(), fields, count, first)
+                .Find(crit, new Expando(), fields, count, first)
                 .Select(s => new SessionHeadline
                                  {
                                      Id = s.Id,
@@ -99,11 +102,14 @@ namespace Web.Repositories
                 .ToList();
         }
 
-        public long CountAllSessions()
+        public long CountAllSessions(DateTime expirationTime)
         {
+            var crit = new Expando();
+            crit["ExpirationTime"] = Q.GreaterOrEqual(expirationTime);
+
             return mongoSession
                 .GetCollection<Session>()
-                .Count();
+                .Count(crit);
         }
     }
 }

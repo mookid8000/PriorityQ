@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Models\Time.cs" />
     <Compile Include="Services\AspNetMvcCookieJar.cs" />
     <Compile Include="Services\CookieBasedUserSessionService.cs" />
     <Compile Include="Services\ICookieJar.cs" />

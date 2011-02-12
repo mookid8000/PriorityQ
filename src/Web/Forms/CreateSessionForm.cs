@@ -26,5 +26,10 @@ namespace Web.Forms
 
         public DateTime LocalTime { get; set; }
         public DateTime ExpirationTime { get; set; }
+
+        public bool HasExpirationTime   
+        {
+            get { return ExpirationTime > LocalTime; }
+        }
     }
 }

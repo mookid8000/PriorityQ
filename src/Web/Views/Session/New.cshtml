@@ -21,6 +21,8 @@
             map.addControl(new GSmallMapControl());
 
             geocoder = new GClientGeocoder();
+        } else {
+            $('#geoStuff').hide();
         }
     }
 
@@ -78,24 +80,37 @@
         });
     }
 
+    function getTimeString(time) {
+        return time.getDate() + '-' + (time.getMonth() + 1) + '-' + time.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+    }
+
     $(function () {
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function (position) {
                 showPosition(position.coords);
-                
+
                 $('#headline').focus();
             });
         }
 
-        initialize();
+        var timeString = getTimeString(new Date());
+
+        $('#expirationTime').val(timeString);
 
         $('#headline').focus();
-    });
+
+        initialize();
+   });
 
     function fillOutLocalTime() {
         var time = new Date();
-        var localTime = time.getDate() + '-' + (time.getMonth() + 1) + '-' + time.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+        var localTime = getTimeString(time);
         $('#localTime').val(localTime);
+    }
+
+    function showCurrentAddress() {
+        var addressText = $('#addressText').val();
+        showAddress(addressText);
     }
 </script>
 
@@ -106,35 +121,37 @@
         <p>Give your PriorityQ a short headline so your participants will know which one to pick...</p>
         @Html.Label("headline", "Headline:")
         
-        @Html.TextBox("headline")
+        @Html.Editor("headline")
         
         <br />
 
-        @Html.Label("expirationTime", "Time when this session should expire:")
+        @Html.Label("expirationTime", "When should this PriorityQ expire?")
 
-        @Html.TextBox("expirationTime")
+        @Html.Editor("expirationTime")
 
         @Html.Hidden("localTime")
 
-        <div id="noAutoGeocode" class="hidden">
-            <p>You should geocode the session so your participants will be able to find it more easily.</p>
-        </div>
+        <div class="geoStuff">
+            <div id="noAutoGeocode" class="hidden">
+                <p>You should geocode the session so your participants will be able to find it more easily.</p>
+            </div>
         
-        <div id="autoGeocode" class="hidden">
-            <p>We have made our best guess at your current location, but it may not be entirely correct.</p>
-            <p>Please help us help you by providing the exact location below...</p>
+            <div id="autoGeocode" class="hidden">
+                <p>We have made our best guess at your current location, but it may not be entirely correct.</p>
+                <p>Please help us help you by providing the exact location below...</p>
+            </div>
+
+            <p> 
+                <input type="text" size="50" id="addressText" value="" /> 
+                <button onclick="showCurrentAddress(); return false;">Locate!</button> 
+            </p> 
+            <div id="map_canvas" style="width: 500px; height: 300px"></div> 
         </div>
 
-        <p> 
-            <input type="text" size="60" id="addressText" value="" /> 
-            <button onclick="showAddress($('#addressText').val()); return false;">Locate!</button> 
-        </p> 
-        <div id="map_canvas" style="width: 500px; height: 300px"></div> 
- 
         <input type="submit" value="Create..." />
 
-        <input type="hidden" name="lat" id="lat" value="@Model.Lat"/>
-        <input type="hidden" name="lng" id="lng" value="@Model.Lng"/>
+        @Html.Hidden("lat")
+        @Html.Hidden("lng")
 
     </fieldset>
 </form>

@@ -23,7 +23,7 @@ namespace Test.Repositories
             Enumerable.Range(0, 457).ForEach(n => sut.Save(NewSession("something")));
 
             // act
-            var count = sut.CountAllSessions();
+            var count = sut.CountAllSessions(DateTime.Now);
 
             // assert
             count.ShouldBe(457);
@@ -66,7 +66,7 @@ namespace Test.Repositories
             sut.AddQuestion(session2.Id, new Question("q1"));
 
             // act
-            var headlines = sut.GetAllSessions(0, 10);
+            var headlines = sut.GetAllSessions(0, 10, DateTime.Now);
 
             // assert
             headlines.Count.ShouldBe(3);

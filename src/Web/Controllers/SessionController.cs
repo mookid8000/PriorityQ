@@ -34,6 +34,11 @@ namespace Web.Controllers
                     session.Location = new Location(form.Lat, form.Lng);
                 }
 
+                if (form.HasExpirationTime)
+                {
+                    session.ExpirationTime = Time.Now() + (form.ExpirationTime - form.LocalTime);
+                }
+
                 sessionRepository.Save(session);
 
                 return RedirectToAction("show", "session", new {id = session.Id});

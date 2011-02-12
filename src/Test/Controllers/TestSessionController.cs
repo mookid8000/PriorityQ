@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Norm;
@@ -53,11 +54,14 @@ namespace Test.Controllers
         public void CanSaveNewSession()
         {
             // arrange
+            var now = DateTime.Now;
             var form = new CreateSessionForm
                            {
                                Headline = "Hello there!",
                                Lat = "2.2",
                                Lng = "3.2",
+                               ExpirationTime = now + TimeSpan.FromHours(1),
+                               LocalTime = now,
                            };
             var newObjectId = ObjectId.NewObjectId();
             Session.NewId = () => newObjectId;
