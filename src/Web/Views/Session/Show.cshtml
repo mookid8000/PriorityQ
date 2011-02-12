@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function upvote(index) {
+        var votesContainer = $('#q-count-' + index);
+        var votes = votesContainer.text();
+        votes++;
+        votesContainer.text(votes);
+
+        $.post(baseUrl + '/session/upvote/@Model.Id?index=' + index, function (response) {
+            votesContainer.text(response.votes);
+
+            $('#q-' + index).addClass('voteCast');
+            $('#q-vote-' + index).hide();
+        });
+    }
+
+    $(function () { $('#text').focus(); });
+</script>
+
+<h2>@Model.Headline</h2>
+
+<form id="questionForm" action="@Url.Action("add", "session")" method="post">
+    <fieldset>
+        <label for="text">Ask a question:</label>
+        <input type="hidden" name="sessionId" value="@Model.Id" />
+        <input type="text" name="text" id="text" />
+        
+        <input type="submit" value="Add..." />
+    </fieldset>
+</form>
+
+@foreach (var question in Model.Questions)
+{
+    <div id="q-@question.Index" class="question @(question.VoteCastByCurrentUser ? "voteCast": "")">
+        <p>
+            @question.Text: <span id="q-count-@question.Index">@question.Votes</span>
+            
+            @if (!question.VoteCastByCurrentUser)
+            {
+                 <a href="#" onclick="javascript:upvote(@question.Index)" id="q-vote-@question.Index">Vote</a>
+            }
+        </p>
+    </div>
+}
+
+<a href="@Url.Action("index", "home")">Back to index</a>

@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAApTSOhgbgKsPZn74bYo5QGhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQPW1flQpleSTbf_ueqoanmhYiLxw" type="text/javascript"></script>
+<script type="text/javascript">
+    var map = null;
+    var geocoder = null;
+
+    function initialize(coords) {
+        if (GBrowserIsCompatible()) {
+            map = new GMap2(document.getElementById("map_canvas"));
+
+            if (coords) {
+                map.setCenter(new GLatLng(coords.latitude, coords.longitude), 13);
+            } else {
+                map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+            }
+
+            map.addControl(new GSmallMapControl());
+
+            geocoder = new GClientGeocoder();
+        }
+    }
+
+    function showPosition(coords) {
+        var lat = coords.latitude;
+        var lng = coords.longitude;
+        var point = new GLatLng(lat, lng);
+
+        map.setCenter(point, 13);
+
+        var marker = new GMarker(point, {draggable: true});
+        map.addOverlay(marker);
+
+        GEvent.addListener(marker, "dragend", function (newCoords) {
+            //showPosition({ latitude: newCoords.lat, longitude: newCoords.lng });
+        }); 
+
+        $('#lat').val(lat);
+        $('#lng').val(lng);
+
+        if (!geocoder) return;
+
+        geocoder.getLocations(point, function (response) {
+            if (!response || response.Status.code != 200) {
+                $('#noAutoGeocode').show();
+                $('#autoGeocode').hide();
+            } else {
+                var placemark = response.Placemark[0];
+                $('#addressText').val(placemark.address);
+                
+                $('#autoGeocode').show();
+                $('#noAutoGeocode').hide();
+            }
+        });
+    }
+
+    function showAddress(address) {
+        if (!geocoder) return;
+
+        geocoder.getLatLng(address, function (point) {
+            if (!point) {
+                alert(address + " not found");
+            } else {
+                map.setCenter(point, 13);
+                var marker = new GMarker(point);
+                map.addOverlay(marker);
+                marker.openInfoWindowHtml(address);
+
+                var lat = point.lat();
+                var lng = point.lng();
+
+                $('#lat').val(lat);
+                $('#lng').val(lng);
+            }
+        });
+    }
+
+    $(function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(function (position) {
+                showPosition(position.coords);
+                
+                $('#headline').focus();
+            });
+        }
+
+        initialize();
+
+        $('#headline').focus();
+    });
+</script>
+
+<h2>Create new session</h2>
+
+<form action="@Url.Action("new", "session")" method="post">
+    <fieldset>
+        <p>Give your Q-session a short headline so your participants will know which one to pick...</p>
+        <label for="headline">Headline:</label>
+        <input type="text" id="headline" name="headline" />
+
+        <div id="noAutoGeocode" class="hidden">
+            <p>You should geocode the session so your participants will be able to find it more easily.</p>
+        </div>
+        
+        <div id="autoGeocode" class="hidden">
+            <p>We have made our best guess at your current location, but it may not be entirely correct.</p>
+            <p>Please help us help you by providing the exact location below...</p>
+        </div>
+
+        <p> 
+            <input type="text" size="60" id="addressText" value="" /> 
+            <button onclick="showAddress($('#addressText').val()); return false;">Locate!</button> 
+        </p> 
+        <div id="map_canvas" style="width: 500px; height: 300px"></div> 
+ 
+        <input type="submit" value="Create..." />
+
+        <input type="hidden" name="lat" id="lat" value="@Model.Lat"/>
+        <input type="hidden" name="lng" id="lng" value="@Model.Lng"/>
+
+    </fieldset>
+</form>
