@@ -15,7 +15,6 @@
 
             $('#q-' + index).addClass('voteCast');
             $('#q-vote-' + index).hide();
-            $(function () { $('#text').focus(); });
         });
     }
 
@@ -25,8 +24,6 @@
 <h2>@Model.Headline</h2>
 
 @Html.ActionLink("Back to index", "index", "home")
-<br />
-<br />
 
 <form id="questionForm" action="@Url.Action("add", "session")" method="post">
     <fieldset>

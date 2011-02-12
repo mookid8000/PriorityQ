@@ -91,15 +91,30 @@
 
         $('#headline').focus();
     });
+
+    function fillOutLocalTime() {
+        var time = new Date();
+        var localTime = time.getDate() + '-' + (time.getMonth() + 1) + '-' + time.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+        $('#localTime').val(localTime);
+    }
 </script>
 
 <h2>Create new session</h2>
 
-<form action="@Url.Action("new", "session")" method="post">
+<form action="@Url.Action("new", "session")" method="post" onsubmit="javascript:fillOutLocalTime()">
     <fieldset>
-        <p>Give your Q-session a short headline so your participants will know which one to pick...</p>
-        <label for="headline">Headline:</label>
-        <input type="text" id="headline" name="headline" />
+        <p>Give your PriorityQ a short headline so your participants will know which one to pick...</p>
+        @Html.Label("headline", "Headline:")
+        
+        @Html.TextBox("headline")
+        
+        <br />
+
+        @Html.Label("expirationTime", "Time when this session should expire:")
+
+        @Html.TextBox("expirationTime")
+
+        @Html.Hidden("localTime")
 
         <div id="noAutoGeocode" class="hidden">
             <p>You should geocode the session so your participants will be able to find it more easily.</p>

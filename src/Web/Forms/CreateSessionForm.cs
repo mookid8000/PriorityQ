@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Web.Forms
 {
     public class CreateSessionForm
@@ -7,6 +10,7 @@ namespace Web.Forms
             Headline = "";
         }
 
+        [Required]
         public string Headline { get; set; }
         public string Lat { get; set; }
         public string Lng { get; set; }
@@ -19,5 +23,8 @@ namespace Web.Forms
                        && !string.IsNullOrWhiteSpace(Lng);
             }
         }
+
+        public DateTime LocalTime { get; set; }
+        public DateTime ExpirationTime { get; set; }
     }
 }
