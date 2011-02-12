@@ -25,10 +25,6 @@ else
     
     if (Model.SessionCount > Model.SessionHeadlines.Count)
     {
-        <p>
-            Showing @Model.From to @Model.To out of @Model.SessionCount.
-        </p>
-    
         if (Model.ShowPrevious)
         {
             <span><a href="@Url.Action("index", new { first = Model.Previous })">Previous page</a></span>
@@ -46,6 +42,8 @@ else
         {
             <span>Next page</span>
         }
+
+        <p>Showing @Model.From to @Model.To out of @Model.SessionCount.</p>
     }
 
     <p>- or @Html.ActionLink("create a new one", "new", "session")...</p>
