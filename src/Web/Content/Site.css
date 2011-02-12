@@ -94,14 +94,19 @@ fieldset
 .questionCount 
 {
     border: 2px solid gray;
-    padding: .1em;
-    font-size: 1.7em;
+    padding: .1em .2em .1em .2em;
+    font-size: 1.8em;
     font-weight: bold;
     background-color: White;
-    margin: 0;
+    margin: 0 .4em 0 0;
 }
 
 .questionText 
 {
-    font-size: 1.3em;
+    font-size: 1.6em;
+}
+
+h2 
+{
+    font-size: 1.7em;
 }

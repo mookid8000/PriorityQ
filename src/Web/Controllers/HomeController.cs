@@ -16,12 +16,13 @@ namespace Web.Controllers
         public ViewResult Index(int? first)
         {
             var firstSessionToShow = first ?? 0;
+            var sessionsPerPage = 10;
 
-            var sessionHeadlines = sessionRepository.GetAllSessions(firstSessionToShow, 10);
+            var sessionHeadlines = sessionRepository.GetAllSessions(firstSessionToShow, sessionsPerPage);
 
             var sessionCount = sessionRepository.CountAllSessions();
 
-            return View(new SessionIndexViewModel(sessionHeadlines, sessionCount, firstSessionToShow));
+            return View(new SessionIndexViewModel(sessionHeadlines, sessionCount, firstSessionToShow, sessionsPerPage));
         }
     }
 }

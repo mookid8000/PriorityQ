@@ -6,7 +6,7 @@ namespace Web.ViewModel
 {
     public class SessionIndexViewModel
     {
-        public SessionIndexViewModel(IEnumerable<SessionHeadline> sessionHeadlines, long sessionCount, int first)
+        public SessionIndexViewModel(IEnumerable<SessionHeadline> sessionHeadlines, long sessionCount, int first, int sessionsPerPage)
         {
             SessionHeadlines = sessionHeadlines
                 .Select(s => new SessionHeadlineViewModel(s))
@@ -16,8 +16,11 @@ namespace Web.ViewModel
             From = first + 1;
             To = first + SessionHeadlines.Count;
 
-            ShowNext = first < sessionCount;
+            ShowNext = first + sessionsPerPage < sessionCount;
             ShowPrevious = first > 0;
+
+            Next = first + sessionsPerPage;
+            Previous = first - sessionsPerPage;
         }
 
         public bool ShowPrevious { get; set; }
@@ -26,6 +29,8 @@ namespace Web.ViewModel
         public long SessionCount { get; set; }
         public int From { get; set; }
         public int To { get; set; }
+        public int Next { get; set; }
+        public int Previous { get; set; }
     }
 
     public class SessionHeadlineViewModel

@@ -24,6 +24,10 @@
 
 <h2>@Model.Headline</h2>
 
+@Html.ActionLink("Back to index", "index", "home")
+<br />
+<br />
+
 <form id="questionForm" action="@Url.Action("add", "session")" method="post">
     <fieldset>
         <label for="text">Ask a question:</label>
@@ -38,7 +42,8 @@
 {
     <div id="q-@question.Index" class="question @(question.VoteCastByCurrentUser ? "voteCast": "")">
         <p>
-            <span class="questionText">@question.Text</span> <span class="questionCount" id="q-count-@question.Index">@question.Votes</span>
+            <span class="questionCount" id="q-count-@question.Index">@question.Votes</span>
+            <span class="questionText">@question.Text</span>
             
             @if (!question.VoteCastByCurrentUser)
             {
@@ -47,5 +52,3 @@
         </p>
     </div>
 }
-
-<a href="@Url.Action("index", "home")">Back to index</a>

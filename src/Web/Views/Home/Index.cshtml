@@ -12,7 +12,7 @@
 }
 else
 {
-    <p>Enter one of the ongoing sesssions:</p>
+    <p>Enter one of the ongoing sessions:</p>
 
     <ul>
         @foreach (var session in Model.SessionHeadlines)
@@ -28,6 +28,24 @@ else
         <p>
             Showing @Model.From to @Model.To out of @Model.SessionCount.
         </p>
+    
+        if (Model.ShowPrevious)
+        {
+            <span><a href="@Url.Action("index", new { first = Model.Previous })">Previous page</a></span>
+        }
+        else
+        {
+            <span>Previous page</span>
+        }
+        <span> | </span>
+        if (Model.ShowNext)
+        {
+            <span><a href="@Url.Action("index", new { first = Model.Next })">Next page</a></span>
+        }
+        else
+        {
+            <span>Next page</span>
+        }
     }
 
     <p>- or @Html.ActionLink("create a new one", "new", "session")...</p>
