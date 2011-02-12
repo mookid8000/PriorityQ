@@ -15,6 +15,7 @@
 
             $('#q-' + index).addClass('voteCast');
             $('#q-vote-' + index).hide();
+            $(function () { $('#text').focus(); });
         });
     }
 
@@ -37,7 +38,7 @@
 {
     <div id="q-@question.Index" class="question @(question.VoteCastByCurrentUser ? "voteCast": "")">
         <p>
-            @question.Text: <span id="q-count-@question.Index">@question.Votes</span>
+            <span class="questionText">@question.Text</span> <span class="questionCount" id="q-count-@question.Index">@question.Votes</span>
             
             @if (!question.VoteCastByCurrentUser)
             {

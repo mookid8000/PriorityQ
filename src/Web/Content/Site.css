@@ -90,3 +90,18 @@ fieldset
     padding: 1em 1em 1em 1em;
     margin: 0.1em 0 0 0;
 }
+
+.questionCount 
+{
+    border: 2px solid gray;
+    padding: .1em;
+    font-size: 1.7em;
+    font-weight: bold;
+    background-color: White;
+    margin: 0;
+}
+
+.questionText 
+{
+    font-size: 1.3em;
+}
