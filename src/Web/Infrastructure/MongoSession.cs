@@ -1,7 +1,9 @@
 using System;
+using Norm;
 using Norm.BSON;
 using Norm.Collections;
 using Norm.Responses;
+using Web.Installers;
 
 namespace Web.Infrastructure
 {
@@ -12,13 +14,20 @@ namespace Web.Infrastructure
 
         public event Action<string> CollectionAccessed = delegate { };
 
-        readonly Norm.Mongo mongo;
+        readonly Mongo mongo;
 
         public MongoSession(string database, string host, int port)
         {
             Database = database;
             Host = host;
-            mongo = new Norm.Mongo(database, host, port.ToString(), "");
+            mongo = new Mongo(database, host, port.ToString(), "");
+        }
+
+        public MongoSession(MongoConfigurationFromAppSettings mongoConfigurationFromAppSettings)
+            : this(mongoConfigurationFromAppSettings.Database,
+            mongoConfigurationFromAppSettings.Host,
+            mongoConfigurationFromAppSettings.Port)
+        {
         }
 
         public IMongoCollection<T> GetCollection<T>()

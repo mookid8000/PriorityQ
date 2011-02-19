@@ -68,6 +68,10 @@
   <ItemGroup>
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Infrastructure\AppEnvironment.cs" />
+    <Compile Include="Infrastructure\AppEnvironmentHelper.cs" />
+    <Compile Include="Installers\ConfigurationInstaller.cs" />
+    <Compile Include="Installers\MongoConfigurationFromAppSettings.cs" />
     <Compile Include="Models\Time.cs" />
     <Compile Include="Services\AspNetMvcCookieJar.cs" />
     <Compile Include="Services\CookieBasedUserSessionService.cs" />

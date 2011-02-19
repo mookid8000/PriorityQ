@@ -10,12 +10,8 @@ namespace Web.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var database = "PriorityQ";
-            var host = "localhost";
-            var port = 27017;
-
             container.Register(Component.For<IMongoSession>()
-                                   .UsingFactoryMethod(k => new MongoSession(database, host, port))
+                                   .UsingFactoryMethod(k => new MongoSession(k.Resolve<MongoConfigurationFromAppSettings>()))
                                    .LifeStyle.Singleton);
 
             container.Register(AllTypes.FromThisAssembly().BasedOn<IIndexCreationTask>()
