@@ -7,7 +7,7 @@ using Web.Installers;
 
 namespace Test.Repositories
 {
-    public abstract class MongoFixture2<TMongoService>
+    public abstract class MongoFixture<TMongoService>
     {
         protected TMongoService sut;
 

@@ -63,7 +63,7 @@
     <Compile Include="Controllers\TestSessionController.cs" />
     <Compile Include="FixtureBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\MongoFixture2.cs" />
+    <Compile Include="Repositories\MongoFixture.cs" />
     <Compile Include="Repositories\TestSessionRepository.cs" />
     <Compile Include="ServiceFixture.cs" />
     <Compile Include="Installers\TestMongoConfigurationFromAppSettings.cs" />

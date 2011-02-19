@@ -9,7 +9,7 @@ using Web.Repositories;
 namespace Test.Repositories
 {
     [TestFixture]
-    public class TestSessionRepository : MongoFixture2<SessionRepository>
+    public class TestSessionRepository : MongoFixture<SessionRepository>
     {
         protected override SessionRepository Create()
         {
