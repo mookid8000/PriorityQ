@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Norm;
+using MongoDB.Bson;
 
 namespace Web.Models
 {
     public class Session
     {
-        public static Func<ObjectId> NewId = ObjectId.NewObjectId;
+        public static Func<ObjectId> NewId = ObjectId.GenerateNewId;
 
         public Session(string headline, string creatorUserId)
         {

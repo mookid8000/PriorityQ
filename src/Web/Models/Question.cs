@@ -5,13 +5,14 @@ namespace Web.Models
     public class Question
     {
         public Question(string text)
+            : this()
         {
             Text = text;
-            Voters = new List<string>();
         }
 
         protected Question()
         {
+            Voters = new List<string>();
         }
 
         public virtual string Text { get; private set; }

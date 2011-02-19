@@ -39,8 +39,11 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\..\lib\windsor\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Norm">
-      <HintPath>..\..\lib\NoRM\Norm.dll</HintPath>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\lib\csharpdriver\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\lib\csharpdriver\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages" />
@@ -71,6 +74,7 @@
     <Compile Include="Infrastructure\AppEnvironment.cs" />
     <Compile Include="Infrastructure\AppEnvironmentHelper.cs" />
     <Compile Include="Installers\ConfigurationInstaller.cs" />
+    <Compile Include="Installers\IMongoConfiguration.cs" />
     <Compile Include="Installers\MongoConfigurationFromAppSettings.cs" />
     <Compile Include="Models\Time.cs" />
     <Compile Include="Services\AspNetMvcCookieJar.cs" />
@@ -89,8 +93,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\IMongoSession.cs" />
-    <Compile Include="Infrastructure\MongoSession.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="Installers\MongoInstaller.cs" />
     <Compile Include="Installers\RepositoryInstaller.cs" />

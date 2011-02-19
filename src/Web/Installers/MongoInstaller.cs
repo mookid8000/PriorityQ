@@ -1,7 +1,8 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Web.Infrastructure;
+using MongoDB.Driver;
+using Web.Models;
 using Web.Repositories.Indexes;
 
 namespace Web.Installers
@@ -10,12 +11,28 @@ namespace Web.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Component.For<IMongoSession>()
-                                   .UsingFactoryMethod(k => new MongoSession(k.Resolve<MongoConfigurationFromAppSettings>()))
-                                   .LifeStyle.Singleton);
+            container
+                .Register(AllTypes.FromThisAssembly()
+                              .BasedOn<IIndexCreationTask>()
+                              .WithService.Base(),
 
-            container.Register(AllTypes.FromThisAssembly().BasedOn<IIndexCreationTask>()
-                                   .WithService.Base());
+                          Component.For<MongoServer>()
+                              .UsingFactoryMethod(k => MongoServer.Create(k.Resolve<IMongoConfiguration>().ConnectionString))
+                              .OnCreate((k, s) => s.Connect())
+                              .LifeStyle.Singleton,
+
+                          Component.For<MongoDatabase>()
+                              .UsingFactoryMethod(k => k.Resolve<MongoServer>()
+                                                           .GetDatabase("PriorityQ")),
+
+                          RegisterCollection<Session>());
+        }
+
+        IRegistration RegisterCollection<T>()
+        {
+            return Component.For(typeof (MongoCollection<T>))
+                .UsingFactoryMethod(k => k.Resolve<MongoDatabase>()
+                                             .GetCollection<T>(typeof (T).Name));
         }
     }
 }

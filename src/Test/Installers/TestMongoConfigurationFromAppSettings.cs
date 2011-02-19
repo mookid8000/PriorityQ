@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using Shouldly;
 using Web.Infrastructure;
@@ -12,10 +13,9 @@ namespace Test.Installers
         public void DoStuff()
         {
             var settings = new MongoConfigurationFromAppSettings(AppEnvironment.Debug);
-            
+
             settings.Database.ShouldBe("PriorityQ");
-            settings.Host.ShouldBe("localhost");
-            settings.Port.ShouldBe(27017);
+            settings.ConnectionString.ShouldBe(new Uri("mongodb://localhost:27017/PriorityQ"));
         }
     }
 }

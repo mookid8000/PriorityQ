@@ -9,11 +9,11 @@ using Web.Repositories;
 namespace Test.Repositories
 {
     [TestFixture]
-    public class TestSessionRepository : MongoFixture<SessionRepository>
+    public class TestSessionRepository : MongoFixture2<SessionRepository>
     {
         protected override SessionRepository Create()
         {
-            return new SessionRepository(MongoSession);
+            return new SessionRepository(CollectionFor<Session>());
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace Test.Repositories
             count3.ShouldBe(3);
         }
 
-        [Test, Ignore]
+        [Test]
         public void CanGetAllSessions()
         {
             // arrange

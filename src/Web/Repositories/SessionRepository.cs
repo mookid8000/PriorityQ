@@ -1,115 +1,76 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Norm;
-using Norm.BSON;
-using Norm.Collections;
-using Web.Infrastructure;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using Web.Models;
 
 namespace Web.Repositories
 {
     public class SessionRepository : ISessionRepository
     {
-        readonly IMongoSession mongoSession;
+        MongoCollection<Session> coll;
 
-        public SessionRepository(IMongoSession mongoSession)
+        public SessionRepository(MongoCollection<Session> coll)
         {
-            this.mongoSession = mongoSession;
+            this.coll = coll;
         }
 
         public void Save(Session session)
         {
-            mongoSession
-                .GetCollection<Session>()
-                .Save(session);
+            coll.Save(session);
         }
 
         public Session Load(ObjectId id)
         {
-            return mongoSession
-                .GetCollection<Session>()
-                .FindOne(new {Id = id});
+            return coll.FindOne(Query.EQ("_id", id));
         }
 
         public void AddQuestion(ObjectId id, Question question)
         {
-            var crit = new Expando();
-            crit["_id"] = id;
-            crit["Questions.Text"] = Q.NotEqual(question.Text);
-
-            var op = new Expando();
-            op["Questions"] = M.Push(question);
-            op["QuestionCount"] = M.Increment(1);
-
-            mongoSession.GetCollection<Session>().Update(crit, op, false, false);
+            coll.Update(Query.And(Query.EQ("_id", id),
+                                  Query.NE("Questions.Text", question.Text)),
+                        Update.Inc("QuestionCount", 1)
+                            .PushWrapped("Questions", question),
+                        UpdateFlags.None);
         }
 
         public int IncrementVotesForQuestion(ObjectId id, int questionIndex, string voterId)
         {
-            var sessionCollection = mongoSession.GetCollection<Session>();
+            var crit = Query.And(Query.EQ("_id", id),
+                                 Query.NE(string.Format("Questions.{0}.Voters", questionIndex), voterId));
 
-            IncrementVotes(id, questionIndex, voterId, sessionCollection);
+            var mod = Update
+                .Inc(string.Format("Questions.{0}.Votes", questionIndex), 1)
+                .Push(string.Format("Questions.{0}.Voters", questionIndex), voterId);
 
-            return GetVoteCount(id, questionIndex, sessionCollection);
-        }
+            coll.Update(crit, mod, UpdateFlags.None);
 
-        int GetVoteCount(ObjectId id, int questionIndex, IMongoCollection<Session> sessionCollection)
-        {
-            var crit = new Expando();
-            crit["_id"] = id;
+            var result = coll.FindAs<BsonDocument>(Query.EQ("_id", id))
+                .SetFields(Fields.Slice("Questions", questionIndex, 1).Include("Questions.Votes"))
+                .Single();
 
-            var selector = new Expando();
-            selector["Questions.Votes"] = 1;
-
-            return sessionCollection
-                .Find(crit, new {}, selector, 1, 0)
-                .Single().Questions[questionIndex].Votes;
-        }
-
-        void IncrementVotes(ObjectId id, int questionIndex, string voterId, IMongoCollection<Session> sessionCollection)
-        {
-            var crit = new Expando();
-            crit["_id"] = id;
-            crit[string.Format("Questions.{0}.Voters", questionIndex)] = Q.NotEqual(voterId);
-
-            var op = new Expando();
-            op[string.Format("Questions.{0}.Votes", questionIndex)] = M.Increment(1);
-            op[string.Format("Questions.{0}.Voters", questionIndex)] = M.Push(voterId);
-
-            sessionCollection.Update(crit, op, false, false);
+            return result["Questions"].AsBsonArray[0].AsBsonDocument["Votes"].AsInt32;
         }
 
         public IList<SessionHeadline> GetAllSessions(int first, int count, DateTime expirationTime)
         {
-            var crit = new Expando();
-            crit["ExpirationTime"] = Q.GreaterOrEqual(expirationTime);
-
-            var fields = new Expando();
-            fields["_id"] = 1;
-            fields["Headline"] = 1;
-            fields["QuestionCount"] = 1;
-
-            return mongoSession
-                .GetCollection<Session>()
-                .Find(crit, new Expando(), fields, count, first)
-                .Select(s => new SessionHeadline
+            return coll.FindAs<BsonDocument>(Query.GTE("ExpirationTime", expirationTime))
+                .SetFields(Fields.Include("Headline", "QuestionCount"))
+                .Skip(first).Take(count)
+                .Select(d => new SessionHeadline
                                  {
-                                     Id = s.Id,
-                                     Headline = s.Headline,
-                                     QuestionCount = s.QuestionCount,
+                                     Id = d["_id"].AsObjectId,
+                                     Headline = d["Headline"].AsString,
+                                     QuestionCount = d["QuestionCount", 0].AsInt32,
                                  })
                 .ToList();
         }
 
         public long CountAllSessions(DateTime expirationTime)
         {
-            var crit = new Expando();
-            crit["ExpirationTime"] = Q.GreaterOrEqual(expirationTime);
-
-            return mongoSession
-                .GetCollection<Session>()
-                .Count(crit);
+            return coll.Count(Query.GTE("ExpirationTime", expirationTime));
         }
     }
 }

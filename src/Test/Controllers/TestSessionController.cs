@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Norm;
+using MongoDB.Bson;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Shouldly;
@@ -30,7 +30,7 @@ namespace Test.Controllers
         {
             // arrange
             controller.CurrentUserSession = new UserSession("knownId");
-            var sessionId = ObjectId.NewObjectId();
+            var sessionId = ObjectId.GenerateNewId();
 
             // act
             controller.Upvote(sessionId.ToString(), 1);
@@ -63,7 +63,7 @@ namespace Test.Controllers
                                ExpirationTime = now + TimeSpan.FromHours(1),
                                LocalTime = now,
                            };
-            var newObjectId = ObjectId.NewObjectId();
+            var newObjectId = ObjectId.GenerateNewId();
             Session.NewId = () => newObjectId;
             controller.CurrentUserSession = new UserSession("someone");
 
@@ -87,7 +87,7 @@ namespace Test.Controllers
         public void OrdersQuestionsByVotes()
         {
             // arrange
-            var id = ObjectId.NewObjectId();
+            var id = ObjectId.GenerateNewId();
             var session = Mock<Session>();
             session.Stub(s => s.Id).Return(id);
             session.Stub(s => s.Questions).Return(new List<Question>
@@ -99,8 +99,10 @@ namespace Test.Controllers
                                                       });
             sessionRepository.Stub(r => r.Load(id)).Return(session);
 
+            controller.CurrentUserSession = new UserSession("joe");
+
             // act
-            var result = controller.Show(id);
+            var result = controller.Show(id.ToString());
             var model = (SessionViewModel) result.Model;
 
             // assert
@@ -123,6 +125,7 @@ namespace Test.Controllers
         {
             var question = Mock<Question>();
             question.Stub(q => q.Votes).Return(votes);
+            question.Stub(q => q.Voters).Return(new List<string>());
             return question;
         }
     }
