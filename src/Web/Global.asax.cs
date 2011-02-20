@@ -48,6 +48,11 @@ namespace Web
 
             ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(container));
         }
+
+        protected void Application_End()
+        {
+            container.Dispose();
+        }
     }
 
     public class WindsorControllerFactory : DefaultControllerFactory

@@ -7,41 +7,72 @@
 <script type="text/javascript">
     var map = null;
     var geocoder = null;
+    var centerOfTheWorld = new GLatLng(42.766543, 65.742188);
+    var defaultZoom = 13;
+
+    // we use this to collect markers, so we can remove them from the map again
+    var markers = [];
+
+    // http://maps.google.com/maps?f=q&source=s_q&hl=da&geocode=&q=%C3%85rhus,+Denmark&aq=0&sll=37.0625,-95.677068&sspn=42.766543,65.742188&ie=UTF8&hq=&hnear=%C3%85rhus,+Danmark&z=12
+
+    function getPoint() {
+        return { lat: $('#lat').val(), lng: $('#lng').val() };
+    }
+
+    function setPoint(point) {
+        $('#lat').val(point.lat);
+        $('#lng').val(point.lng);
+    }
 
     function initialize(coords) {
         if (GBrowserIsCompatible()) {
             map = new GMap2(document.getElementById("map_canvas"));
 
             if (coords) {
-                map.setCenter(new GLatLng(coords.latitude, coords.longitude), 13);
+                map.setCenter(new GLatLng(coords.latitude, coords.longitude), defaultZoom);
             } else {
-                map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+                map.setCenter(centerOfTheWorld, defaultZoom);
             }
 
             map.addControl(new GSmallMapControl());
-
             geocoder = new GClientGeocoder();
         } else {
             $('#geoStuff').hide();
         }
     }
 
+    function clearMarkers() {
+        for (i in markers) {
+            map.removeOverlay(markers[i]);
+        }
+        markers.length = 0;
+    }
+
+    function createAndSetMarker(point) {
+        var marker = new GMarker(point, { draggable: true });
+        markers.push(marker);
+
+        map.addOverlay(marker);
+        map.setCenter(point);
+
+        GEvent.addListener(marker, "dragend", function (newCoords) {
+            showPosition({ latitude: newCoords.lat(), longitude: newCoords.lng() });
+        });
+
+        var lat = point.lat();
+        var lng = point.lng();
+
+        setPoint({ lat: lat, lng: lng });
+    }
+
     function showPosition(coords) {
+        clearMarkers();
+
         var lat = coords.latitude;
         var lng = coords.longitude;
         var point = new GLatLng(lat, lng);
 
-        map.setCenter(point, 13);
-
-        var marker = new GMarker(point, {draggable: true});
-        map.addOverlay(marker);
-
-        GEvent.addListener(marker, "dragend", function (newCoords) {
-            //showPosition({ latitude: newCoords.lat, longitude: newCoords.lng });
-        }); 
-
-        $('#lat').val(lat);
-        $('#lng').val(lng);
+        createAndSetMarker(point);
 
         if (!geocoder) return;
 
@@ -66,16 +97,7 @@
             if (!point) {
                 alert(address + " not found");
             } else {
-                map.setCenter(point, 13);
-                var marker = new GMarker(point);
-                map.addOverlay(marker);
-                marker.openInfoWindowHtml(address);
-
-                var lat = point.lat();
-                var lng = point.lng();
-
-                $('#lat').val(lat);
-                $('#lng').val(lng);
+                createAndSetMarker(point);
             }
         });
     }
@@ -90,6 +112,8 @@
                 showPosition(position.coords);
 
                 $('#headline').focus();
+            }, function () {
+                alert('could not determine position!');
             });
         }
 
@@ -99,8 +123,11 @@
 
         $('#headline').focus();
 
+        var lat = $('#lat').val();
+        var lng = $('#lng').val();
+
         initialize();
-   });
+    });
 
     function fillOutLocalTime() {
         var time = new Date();
@@ -110,6 +137,7 @@
 
     function showCurrentAddress() {
         var addressText = $('#addressText').val();
+        clearMarkers();
         showAddress(addressText);
     }
 </script>
@@ -143,7 +171,7 @@
 
             <p> 
                 <input type="text" size="50" id="addressText" value="" /> 
-                <button onclick="showCurrentAddress(); return false;">Locate!</button> 
+                <button onclick="showCurrentAddress(); return false;">Search location...</button> 
             </p> 
             <div id="map_canvas" style="width: 500px; height: 300px"></div> 
         </div>
