@@ -46,7 +46,7 @@ namespace Test.Controllers
             
             result.ViewName.ShouldBe("new");
 
-            var form = (CreateSessionForm)result.Model;
+            var form = result.Model.As<CreateSessionForm>();
             form.Headline.ShouldBe("");
         }
 
@@ -64,23 +64,46 @@ namespace Test.Controllers
                                LocalTime = now,
                            };
             var newObjectId = ObjectId.GenerateNewId();
-            FakeDoc.NewId = () => newObjectId;
+            FakeDoc.StubId(newObjectId);
             controller.CurrentUserSession = new UserSession("someone");
+            var sessionChecked = false;
+
+            sessionRepository.Stub(r => r.Save(Arg<Session>.Is.Anything))
+                .Callback<Session>(s =>
+                                       {
+                                           s.Headline.ShouldBe("Hello there!");
+                                           s.CreatedBy.ShouldBe("someone");
+                                           s.Location.Lat.ShouldBe(2.2);
+                                           s.Location.Lng.ShouldBe(3.2);
+                                           sessionChecked = true;
+                                           return true;
+                                       });
 
             // act
             var actionResult = controller.New(form);
 
             // assert
-            var result = (RedirectToRouteResult)actionResult;
+            var result = actionResult.As<RedirectToRouteResult>();
 
             result.RouteValues["controller"].ShouldBe("session");
             result.RouteValues["action"].ShouldBe("show");
             result.RouteValues["id"].ShouldBe(newObjectId);
+            sessionChecked.ShouldBe(true);
 
-            //sessionRepository.AssertWasCalled(r => r.Save(Arg<Session>.Matches(s => s.Headline == "Hello there!")));
-            //sessionRepository.AssertWasCalled(r => r.Save(Arg<Session>.Matches(s => s.CreatedBy == "someone")));
-            //sessionRepository.AssertWasCalled(r => r.Save(Arg<Session>.Matches(s => s.Location.Lat == 2.2)));
-            //sessionRepository.AssertWasCalled(r => r.Save(Arg<Session>.Matches(s => s.Location.Lng == 3.2)));
+            // OMGWTF?!?
+            //System.Reflection.AmbiguousMatchException : Ambiguous match found.
+            //at System.RuntimeType.GetMethodImpl(String name, BindingFlags bindingAttr, Binder binder, CallingConventions callConv, Type[] types, ParameterModifier[] modifiers)
+            //at System.Type.GetMethod(String name)
+            //at Rhino.Mocks.Constraints.LambdaConstraint.Eval(Object obj)
+            //at Rhino.Mocks.Expectations.ConstraintsExpectation.DoIsExpected(Object[] args)
+            //at Rhino.Mocks.Expectations.AbstractExpectation.IsExpected(Object[] args)
+            //at Rhino.Mocks.RhinoMocksExtensions.AssertWasCalled(T mock, Action`1 action, Action`1 setupConstraints)
+            //at Rhino.Mocks.RhinoMocksExtensions.AssertWasCalled(T mock, Action`1 action)
+            //at Test.Controllers.TestSessionController.CanSaveNewSession() in TestSessionController.cs: line 90 
+            //            sessionRepository.AssertWasCalled(r => r.Save(Arg<Session>.Matches(s => s.Headline == "Hello there!"
+            //                                                                                    && s.CreatedBy == "someone"
+            //                                                                                    && s.Location.Lat == 2.2
+            //                                                                                    && s.Location.Lng == 3.2)));
         }
 
         [Test]
