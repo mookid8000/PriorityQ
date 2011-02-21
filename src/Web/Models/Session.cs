@@ -4,10 +4,8 @@ using MongoDB.Bson;
 
 namespace Web.Models
 {
-    public class Session
+    public class Session : Doc
     {
-        public static Func<ObjectId> NewId = ObjectId.GenerateNewId;
-
         public Session(string headline, string creatorUserId)
         {
             Id = NewId();

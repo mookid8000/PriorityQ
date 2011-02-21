@@ -64,7 +64,7 @@ namespace Test.Controllers
                                LocalTime = now,
                            };
             var newObjectId = ObjectId.GenerateNewId();
-            Session.NewId = () => newObjectId;
+            FakeDoc.NewId = () => newObjectId;
             controller.CurrentUserSession = new UserSession("someone");
 
             // act

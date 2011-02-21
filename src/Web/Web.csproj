@@ -76,6 +76,8 @@
     <Compile Include="Installers\ConfigurationInstaller.cs" />
     <Compile Include="Installers\IMongoConfiguration.cs" />
     <Compile Include="Installers\MongoConfigurationFromAppSettings.cs" />
+    <Compile Include="Models\Doc.cs" />
+    <Compile Include="Models\FakeDoc.cs" />
     <Compile Include="Models\Time.cs" />
     <Compile Include="Services\AspNetMvcCookieJar.cs" />
     <Compile Include="Services\CookieBasedUserSessionService.cs" />

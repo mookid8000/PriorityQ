@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using Castle.Core;
 using NUnit.Framework;
 using Shouldly;
@@ -20,7 +21,12 @@ namespace Test.Repositories
         public void CanCountSessions()
         {
             // arrange
-            Enumerable.Range(0, 457).ForEach(n => sut.Save(NewSession("something")));
+            Enumerable.Range(0, 457).ForEach(n =>
+                                                 {
+                                                     var newSession = NewSession(string.Format("Session {0}", n));
+                                                     Console.WriteLine("Saving session {0}", newSession.Id);
+                                                     sut.Save(newSession);
+                                                 });
 
             // act
             var count = sut.CountAllSessions(DateTime.Now);

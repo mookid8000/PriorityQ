@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using NUnit.Framework;
 using Web.Infrastructure;
 using Web.Installers;
+using Web.Models;
 
 namespace Test.Repositories
 {
@@ -43,6 +44,8 @@ namespace Test.Repositories
         [SetUp]
         public void SetUp()
         {
+            FakeDoc.Reset();
+
             accessedCollections = new HashSet<string>();
 
             mongoDatabase = mongoServer.GetDatabase(settings.Database);

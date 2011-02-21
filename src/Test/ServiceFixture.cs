@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Web.Models;
 
 namespace Test
 {
@@ -15,6 +16,8 @@ namespace Test
         [SetUp]
         public void SetUp()
         {
+            FakeDoc.Reset();
+
             sut = Create();
 
             DoSetUp();

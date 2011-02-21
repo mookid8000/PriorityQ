@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using NUnit.Framework;
+using Web.Models;
 
 namespace Test
 {
@@ -16,6 +17,8 @@ namespace Test
         [SetUp]
         public void SetUp()
         {
+            FakeDoc.Reset();
+
             controller = Create();
 
             DoSetUp();
