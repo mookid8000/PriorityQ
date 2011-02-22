@@ -68,13 +68,13 @@ namespace Test
             {
             }
 
-            if (dropCollections)
-            {
-                accessedCollections.ToList()
-                    .ForEach(collectionName => mongoDatabase.DropCollection(collectionName));
+            //if (dropCollections)
+            //{
+            //    accessedCollections.ToList()
+            //        .ForEach(collectionName => mongoDatabase.DropCollection(collectionName));
 
-                accessedCollections.Clear();
-            }
+            //    accessedCollections.Clear();
+            //}
         }
 
         protected virtual void DoTestFixtureSetUp() { }
