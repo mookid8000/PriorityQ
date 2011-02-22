@@ -6,7 +6,7 @@ using Web.Infrastructure;
 using Web.Installers;
 using Web.Models;
 
-namespace Test.Repositories
+namespace Test
 {
     public abstract class MongoFixture<TMongoService>
     {
