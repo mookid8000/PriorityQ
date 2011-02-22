@@ -3,7 +3,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAApTSOhgbgKsPZn74bYo5QGhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQPW1flQpleSTbf_ueqoanmhYiLxw" type="text/javascript"></script>
+@if (App.Environment == Web.Infrastructure.AppEnvironment.Debug)
+{
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAApTSOhgbgKsPZn74bYo5QGhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQPW1flQpleSTbf_ueqoanmhYiLxw" type="text/javascript"></script>
+}
+else
+{
+ <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAApTSOhgbgKsPZn74bYo5QGhTRtxfLY_M3vrFsARlAcv3vG21kIxThAhh7X7YmGBxYzXRqad9b8TkiSQ" type="text/javascript"></script>
+}
+
 <script type="text/javascript">
     var map = null;
     var geocoder = null;
