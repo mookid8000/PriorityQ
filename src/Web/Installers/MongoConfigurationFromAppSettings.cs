@@ -20,7 +20,6 @@ namespace Web.Installers
                 throw new InvalidOperationException(message);
             }
 
-            CollectionPrefix = section["collection_prefix"];
             ConnectionString = new Uri(section["connectionString"]);
             Database = ConnectionString.ToString().Split('/').Last();
         }
@@ -31,12 +30,6 @@ namespace Web.Installers
         }
 
         public string Database { get; set; }
-
-        public string Host { get; set; }
-
-        public int Port { get; set; }
-
-        public string CollectionPrefix { get; set; }
 
         public Uri ConnectionString { get; set; }
     }
