@@ -9,8 +9,10 @@
 }
 else
 {
- <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAApTSOhgbgKsPZn74bYo5QGhTRtxfLY_M3vrFsARlAcv3vG21kIxThAhh7X7YmGBxYzXRqad9b8TkiSQ" type="text/javascript"></script>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAApTSOhgbgKsPZn74bYo5QGhTRtxfLY_M3vrFsARlAcv3vG21kIxThAhh7X7YmGBxYzXRqad9b8TkiSQ" type="text/javascript"></script>
 }
+
+<script src="@Url.Content("~/Scripts/calendrical/jquery.calendrical.js")" type="text/javascript"></script>
 
 <script type="text/javascript">
     var map = null;
@@ -131,6 +133,9 @@ else
 
         $('#headline').focus();
 
+        $('#expirationDate').calendricalDate();
+        $('#expirationTime').calendricalTime();
+
         var lat = $('#lat').val();
         var lng = $('#lng').val();
 
@@ -161,10 +166,6 @@ else
         
         <br />
 
-        @Html.Label("expirationTime", "When should this PriorityQ expire?")
-
-        @Html.Editor("expirationTime")
-
         @Html.Hidden("localTime")
 
         <div class="geoStuff">
@@ -184,10 +185,15 @@ else
             <div id="map_canvas" style="width: 500px; height: 300px"></div> 
         </div>
 
-        <input type="submit" value="Create..." />
+        @Html.Label("expirationDate", "When should this PriorityQ expire?")
+        @Html.TextBox("expirationDate")
+        @Html.TextBox("expirationTime")
 
         @Html.Hidden("lat")
         @Html.Hidden("lng")
+
+        <br />
+        <input type="submit" value="Create..." />
 
     </fieldset>
 </form>

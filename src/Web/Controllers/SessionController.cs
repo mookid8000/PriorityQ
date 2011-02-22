@@ -19,7 +19,17 @@ namespace Web.Controllers
         [HttpGet]
         public ViewResult New()
         {
-            return View("new", new CreateSessionForm());
+            var expirationTime = Time.Now() + 2.Hours();
+            var timeOfDay = expirationTime.TimeOfDay;
+            var date = expirationTime.Date;
+            var form = new CreateSessionForm
+                           {
+                               ExpirationDate = date.ToShortDateString(),
+                               ExpirationTime = string.Format("{0:00}:{1:00}", timeOfDay.Hours,
+                                                              timeOfDay.Minutes),
+                           };
+
+            return View("new", form);
         }
 
         [HttpPost]
@@ -36,7 +46,7 @@ namespace Web.Controllers
 
                 if (form.HasExpirationTime)
                 {
-                    session.ExpirationTime = Time.Now() + (form.ExpirationTime - form.LocalTime);
+                    session.ExpirationTime = Time.Now() + form.TimeToExpire;
                 }
 
                 sessionRepository.Save(session);

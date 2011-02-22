@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Infrastructure\App.cs" />
     <Compile Include="Infrastructure\AppEnvironment.cs" />
     <Compile Include="Infrastructure\AppEnvironmentHelperFromAppSettings.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="ViewModel\SessionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\calendrical.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\jquery-ui.css" />
@@ -127,6 +129,9 @@
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Scripts\calendrical\calendrical.css" />
+    <Content Include="Scripts\calendrical\example.html" />
+    <Content Include="Scripts\calendrical\jquery.calendrical.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -166,7 +171,12 @@
   <ItemGroup>
     <Content Include="Views\Session\Show.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Scripts\calendrical\build_css.sh" />
+    <None Include="Scripts\calendrical\calendrical.scss" />
+    <None Include="Scripts\calendrical\LICENSE" />
+    <None Include="Scripts\calendrical\README.md" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
