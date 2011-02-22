@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using MongoDB.Driver;
 using NUnit.Framework;
@@ -8,7 +10,7 @@ using Web.Models;
 
 namespace Test
 {
-    public abstract class MongoFixture<TMongoService>
+    public abstract class MongoFixture<TMongoService> : IAppEnvironmentHelper
     {
         protected TMongoService sut;
 
@@ -30,7 +32,7 @@ namespace Test
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            settings = new MongoConfigurationFromAppSettings(AppEnvironment.Debug);
+            settings = new MongoConfigurationFromAppSettings(this);
             mongoServer = MongoServer.Create(settings.ConnectionString);
             mongoServer.Connect();
         }
@@ -86,6 +88,18 @@ namespace Test
         protected void DontDropCollections()
         {
             dropCollections = false;
+        }
+
+        public AppEnvironment Current
+        {
+            get { return GetAppEnvironment(); }
+        }
+
+        AppEnvironment GetAppEnvironment()
+        {
+            var environmentAsString = ConfigurationManager.AppSettings["Environment"];
+
+            return (AppEnvironment) Enum.Parse(typeof (AppEnvironment), environmentAsString);
         }
     }
 }

@@ -9,9 +9,8 @@ namespace Web.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Component.For<AppEnvironmentHelper>()
-                                   .Named("appEnvironment")
-                                   .UsingFactoryMethod(k => new AppEnvironmentHelper())
+            container.Register(Component.For<IAppEnvironmentHelper>()
+                                   .ImplementedBy<AppEnvironmentHelperFromAppSettings>()
                                    .LifeStyle.Singleton,
 
                                Component.For<IMongoConfiguration>()

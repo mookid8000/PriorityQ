@@ -72,7 +72,8 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Infrastructure\AppEnvironment.cs" />
-    <Compile Include="Infrastructure\AppEnvironmentHelper.cs" />
+    <Compile Include="Infrastructure\AppEnvironmentHelperFromAppSettings.cs" />
+    <Compile Include="Infrastructure\IAppEnvironmentHelper.cs" />
     <Compile Include="Installers\ConfigurationInstaller.cs" />
     <Compile Include="Installers\IMongoConfiguration.cs" />
     <Compile Include="Installers\MongoConfigurationFromAppSettings.cs" />

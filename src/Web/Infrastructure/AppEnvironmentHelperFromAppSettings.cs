@@ -3,11 +3,18 @@ using System.Configuration;
 
 namespace Web.Infrastructure
 {
-    public class AppEnvironmentHelper
+    public class AppEnvironmentHelperFromAppSettings : IAppEnvironmentHelper
     {
+        readonly AppEnvironment appEnvironment;
+
+        public AppEnvironmentHelperFromAppSettings()
+        {
+            appEnvironment = GetAppEnvironment();
+        }
+
         public AppEnvironment Current
         {
-            get { return GetAppEnvironment(); }
+            get { return appEnvironment; }
         }
 
         AppEnvironment GetAppEnvironment()

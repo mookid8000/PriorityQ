@@ -8,8 +8,12 @@ namespace Web.Installers
 {
     public class MongoConfigurationFromAppSettings : IMongoConfiguration
     {
-        public MongoConfigurationFromAppSettings(AppEnvironment appEnvironment)
+        readonly IAppEnvironmentHelper appEnvironmentHelper;
+
+        public MongoConfigurationFromAppSettings(IAppEnvironmentHelper appEnvironmentHelper)
         {
+            var appEnvironment = appEnvironmentHelper.Current;
+            this.appEnvironmentHelper = appEnvironmentHelper;
             var sectionPath = string.Format("mongo/{0}", appEnvironment).ToLower();
             var section = (NameValueCollection)ConfigurationManager.GetSection(sectionPath);
 
@@ -22,11 +26,6 @@ namespace Web.Installers
 
             ConnectionString = new Uri(section["connectionString"]);
             DatabaseName = ConnectionString.ToString().Split('/').Last();
-        }
-
-        public MongoConfigurationFromAppSettings(AppEnvironmentHelper appEnvironmentHelper)
-            : this(appEnvironmentHelper.Current)
-        {
         }
 
         public string DatabaseName { get; set; }
