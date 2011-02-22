@@ -14,7 +14,7 @@ namespace Test.Installers
         {
             var settings = new MongoConfigurationFromAppSettings(AppEnvironment.Debug);
 
-            settings.Database.ShouldBe("PriorityQ");
+            settings.DatabaseName.ShouldBe("PriorityQ");
             settings.ConnectionString.ShouldBe(new Uri("mongodb://localhost:27017/PriorityQ"));
         }
     }

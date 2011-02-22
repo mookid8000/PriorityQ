@@ -22,8 +22,7 @@ namespace Web.Installers
                               .LifeStyle.Singleton,
 
                           Component.For<MongoDatabase>()
-                              .UsingFactoryMethod(k => k.Resolve<MongoServer>()
-                                                           .GetDatabase("PriorityQ")),
+                              .UsingFactoryMethod(k => k.Resolve<MongoServer>().GetDatabase(k.Resolve<IMongoConfiguration>().DatabaseName)),
 
                           RegisterCollection<Session>());
         }

@@ -15,7 +15,8 @@ namespace Web.Installers
                                    .LifeStyle.Singleton,
 
                                Component.For<IMongoConfiguration>()
-                                   .ImplementedBy<MongoConfigurationFromAppSettings>());
+                                   .ImplementedBy<MongoConfigurationFromAppSettings>()
+                                   .LifeStyle.Singleton);
         }
     }
 }

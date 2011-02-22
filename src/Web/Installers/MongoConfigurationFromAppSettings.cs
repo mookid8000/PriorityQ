@@ -21,7 +21,7 @@ namespace Web.Installers
             }
 
             ConnectionString = new Uri(section["connectionString"]);
-            Database = ConnectionString.ToString().Split('/').Last();
+            DatabaseName = ConnectionString.ToString().Split('/').Last();
         }
 
         public MongoConfigurationFromAppSettings(AppEnvironmentHelper appEnvironmentHelper)
@@ -29,7 +29,7 @@ namespace Web.Installers
         {
         }
 
-        public string Database { get; set; }
+        public string DatabaseName { get; set; }
 
         public Uri ConnectionString { get; set; }
     }
