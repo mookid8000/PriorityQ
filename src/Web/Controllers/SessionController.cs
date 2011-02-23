@@ -22,12 +22,7 @@ namespace Web.Controllers
             var expirationTime = Time.Now() + 2.Hours();
             var timeOfDay = expirationTime.TimeOfDay;
             var date = expirationTime.Date;
-            var form = new CreateSessionForm
-                           {
-                               ExpirationDate = date.ToShortDateString(),
-                               ExpirationTime = string.Format("{0:00}:{1:00}", timeOfDay.Hours,
-                                                              timeOfDay.Minutes),
-                           };
+            var form = new CreateSessionForm {ExpirationHours = 3};
 
             return View("new", form);
         }
@@ -44,10 +39,7 @@ namespace Web.Controllers
                     session.Location = new Location(form.Lat, form.Lng);
                 }
 
-                if (form.HasExpirationTime)
-                {
-                    session.ExpirationTime = Time.Now() + form.TimeToExpire;
-                }
+                session.ExpirationTime = Time.Now() + form.ExpirationHours.Hours();
 
                 sessionRepository.Save(session);
 

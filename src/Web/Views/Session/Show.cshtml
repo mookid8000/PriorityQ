@@ -10,7 +10,7 @@
         votes++;
         votesContainer.text(votes);
 
-        $.post(baseUrl + '/session/upvote/@Model.Id?index=' + index, function (response) {
+        $.post(baseUrl + '/session/upvote/@Model.SessionId?index=' + index, function (response) {
             votesContainer.text(response.votes);
 
             $('#q-' + index).addClass('voteCast');
@@ -23,15 +23,15 @@
 
 <h2>@Model.Headline</h2>
 
-@Html.ActionLink("Back to index", "index", "home")
-
 <form id="questionForm" action="@Url.Action("add", "session")" method="post">
     <fieldset>
-        <label for="text">Ask a question:</label>
-        <input type="hidden" name="sessionId" value="@Model.Id" />
-        <input type="text" name="text" id="text" />
+        @Html.Label("text", "Pose a question:")
         
-        <input type="submit" value="Add..." />
+        @Html.Hidden("sessionId")
+        
+        @Html.TextBox("text")
+        
+        <input type="submit" value="Add..." class="button" />
     </fieldset>
 </form>
 
@@ -49,3 +49,7 @@
         </p>
     </div>
 }
+
+<p>
+    ...or @Html.ActionLink("go back to the front page", "index", "home").
+</p>

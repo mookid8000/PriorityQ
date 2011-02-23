@@ -60,8 +60,7 @@ namespace Test.Controllers
                                Headline = "Hello there!",
                                Lat = "2.2",
                                Lng = "3.2",
-                               ExpirationDate = now.ToShortDateString(),
-                               ExpirationTime = TimeSpan.FromHours(1).ToString(),
+                               ExpirationHours = 24,
                                LocalTime = now.ToString(),
                            };
             var newObjectId = ObjectId.GenerateNewId();
