@@ -44,7 +44,7 @@ namespace Test.Controllers
         {
             var result = controller.New();
             
-            result.ViewName.ShouldBe("new");
+            result.ViewName.ShouldBe("New");
 
             var form = result.Model.As<CreateSessionForm>();
             form.Headline.ShouldBe("");
