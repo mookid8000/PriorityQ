@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Create new session";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -155,8 +155,6 @@ else
     }
 </script>
 
-<h2>Create new session</h2>
-
 <form action="@Url.Action("new", "session")" method="post" onsubmit="javascript:fillOutLocalTime()">
     <fieldset>
         <p>Give your PriorityQ a short headline so your participants will know which one to pick...</p>
@@ -175,22 +173,23 @@ else
         
             <div id="autoGeocode" class="hidden">
                 <p>We have made our best guess at your current location, but it may not be entirely correct.</p>
-                <p>Please help us help you by providing the exact location below...</p>
+                <p>Please help us correct the location if it is too far off.</p>
             </div>
 
             <p> 
-                <input type="text" size="50" id="addressText" value="" /> 
-                <button onclick="showCurrentAddress(); return false;">Search location...</button> 
+                <input type="text" size="40" id="addressText" value="" /> 
+                <button onclick="showCurrentAddress(); return false;">Search...</button> 
             </p> 
-            <div id="map_canvas" style="width: 500px; height: 300px"></div> 
+
+            <div id="map_canvas" />
+
+            @Html.Hidden("lat")
+            @Html.Hidden("lng")
         </div>
 
         @Html.Label("expirationDate", "When should this PriorityQ expire?")
         @Html.TextBox("expirationDate")
         @Html.TextBox("expirationTime")
-
-        @Html.Hidden("lat")
-        @Html.Hidden("lng")
 
         <br />
         <input type="submit" value="Create..." />

@@ -23,8 +23,6 @@
 
 <h2>@Model.Headline</h2>
 
-@Html.ActionLink("Back to index", "index", "home")
-
 <form id="questionForm" action="@Url.Action("add", "session")" method="post">
     <fieldset>
         <label for="text">Ask a question:</label>
@@ -32,6 +30,8 @@
         <input type="text" name="text" id="text" />
         
         <input type="submit" value="Add..." />
+
+        or @Html.ActionLink("go back to index", "index", "home")...
     </fieldset>
 </form>
 
