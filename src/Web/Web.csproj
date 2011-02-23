@@ -116,6 +116,7 @@
     <Content Include="Content\img\back.png" />
     <Content Include="Content\img\logo-small.png" />
     <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\logo2.png" />
     <Content Include="Content\reset.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
