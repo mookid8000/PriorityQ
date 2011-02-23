@@ -72,7 +72,7 @@ namespace Web.Controllers
 
             if (ModelState.IsValid)
             {
-                sessionRepository.AddQuestion(sessionId, new Question(form.Text));
+                sessionRepository.AddQuestion(sessionId, new Question(form.QuestionText));
             }
 
             return RedirectToAction("show", "session", new { id = sessionId });

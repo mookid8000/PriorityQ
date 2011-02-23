@@ -7,6 +7,6 @@ namespace Web.Forms
         public string SessionId { get; set; }
 
         [Required]
-        public string Text { get; set; }
+        public string QuestionText { get; set; }
     }
 }

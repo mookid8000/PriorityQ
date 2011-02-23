@@ -26,11 +26,11 @@
 <form id="questionForm" action="@Url.Action("add", "session")" method="post">
     <fieldset>
         @Html.Label("text", "Pose a question:")
+
+        @Html.TextBox("questionText")
         
         @Html.Hidden("sessionId")
-        
-        @Html.TextBox("text")
-        
+       
         <input type="submit" value="Add..." class="button" />
     </fieldset>
 </form>
