@@ -142,12 +142,6 @@ else
         initialize();
     });
 
-    function fillOutLocalTime() {
-        var time = new Date();
-        var localTime = getTimeString(time);
-        $('#localTime').val(localTime);
-    }
-
     function showCurrentAddress() {
         var addressText = $('#addressText').val();
         clearMarkers();
@@ -155,29 +149,25 @@ else
     }
 </script>
 
-<form action="@Url.Action("new", "session")" method="post" onsubmit="javascript:fillOutLocalTime()">
+<form action="@Url.Action("new", "session")" method="post">
     <fieldset>
-        <p>Give your PriorityQ a short headline so your participants will know which one to pick...</p>
-        @Html.Label("headline", "Headline:")
+        <p>Give your PriorityQ a short headline so your participants will know which one to pick:</p>
         
-        @Html.Editor("headline")
-        
-        <br />
-
-        @Html.Hidden("localTime")
+        <p>
+            @Html.TextBox("headline")
+        </p>
 
         <div class="geoStuff">
-            <div id="noAutoGeocode" class="hidden">
-                <p>You should geocode the session so your participants will be able to find it more easily.</p>
+            <div id="noAutoGeocode">
+                <p>You should pick a location for the session, so your participants will be able to find it more easily.</p>
             </div>
         
             <div id="autoGeocode" class="hidden">
-                <p>We have made our best guess at your current location, but it may not be entirely correct.</p>
-                <p>Please help us correct the location if it is too far off.</p>
+                <p>We have made our best effort to guess your current location, but it may not be entirely correct.</p>
             </div>
 
             <p> 
-                <input type="text" size="40" id="addressText" value="" /> 
+                <input type="text" id="addressText" size="45" /> 
                 <button onclick="showCurrentAddress(); return false;">Search...</button> 
             </p> 
 
@@ -187,12 +177,13 @@ else
             @Html.Hidden("lng")
         </div>
 
-        @Html.Label("expirationDate", "When should this PriorityQ expire?")
-        @Html.TextBox("expirationDate")
-        @Html.TextBox("expirationTime")
-
-        <br />
-        <input type="submit" value="Create..." />
+        <p>
+            This session will expire @Html.TextBox("expirationHours") hours from now.
+        </p>
+        
+        <p>
+            <input type="submit" value="Create this session..." class="button" />
+        </p>
 
     </fieldset>
 </form>

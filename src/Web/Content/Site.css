@@ -1,3 +1,4 @@
+@import url("reset.css");
 @import url("calendrical.css");
 
 body
@@ -10,12 +11,6 @@ body
     background-color: white;
     background-image: url('/Content/img/back.png');
     background-repeat: repeat-x;
-}
-
-form 
-{
-    margin: 0;
-    padding: 0;
 }
 
 #outer 
@@ -32,6 +27,8 @@ form
 
 #content {
     text-align: left;
+    margin: 0;
+    padding: 0;
 }
 
 h1, h2
@@ -41,13 +38,78 @@ h1, h2
 
 #map_canvas 
 {
-    width: 420px;
+    width: 440px;
     height: 300px;
+    border: 1px solid gray;
 }
 
 form fieldset 
 {
+    padding: .5em;
+    margin: 0;
     border: none;
+}
+
+.hidden 
+{
+    display: none;
+}
+
+.question 
+{
+    padding: 1em .5em 1em .5em;
+    margin: 0;
+    border: none;
+    border-top: 1px solid #bbb;
+    background-color: #ddd;
+}
+
+.voteCast 
+{
+    background-color: #f3f3f3;
+}
+
+.questionCount 
+{
+    font-family: Verdana;
+    border: 1px solid gray;
+    padding: .05em;
+    margin: .04em;
+    font-size: 1.8em;
+    font-weight: bold;
+    background-color: White;
+}
+
+.questionText 
+{
+    font-size: 1.5em;
+    line-height: 1.2em;
+}
+
+h2 
+{
+    font-size: 2.1em;
+    font-weight: bold;
+    letter-spacing: -.01em;
+}
+
+ul, ol 
+{
+    margin-top: .4em;
+    margin-bottom: .6em;
+    list-style-type: circle;
+}
+
+ul li, ol li 
+{
+    margin-left: 2em;
+}
+
+p 
+{
+    margin-top: .3em;
+    margin-bottom: .7em;
+    padding: 0;
 }
 
 /* Styles for basic forms
@@ -81,6 +143,38 @@ textarea
     margin:0.5em 0 0 0;
 }
 
+input, button
+{
+    padding: .4em;
+    margin: 0;
+    font-size: 1em;
+    font-family: Georgia;
+    border: none;
+    background-color: #e8f0e8;
+}
+
+button, .button
+{
+    border: 2px solid gray;
+    background-color: White;
+    height: 1.9em;
+    margin: 0;
+    padding: 0 .3em 0 .3em;
+}
+
+#headline 
+{
+    width: 430px
+}
+
+/* Styles for specific form elements
+-----------------------------------------------------------*/
+
+#expirationHours 
+{
+    width: 1.5em;
+    text-align: center;
+}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
@@ -96,8 +190,7 @@ textarea
 
 .input-validation-error
 {
-    border: 1px solid #ff0000;
-    background-color: #ffeeee;
+    border: 2px solid #ff0000;
 }
 
 .validation-summary-errors
@@ -109,48 +202,4 @@ textarea
 .validation-summary-valid
 {
     display: none;
-}
-
-.hidden 
-{
-    display: none;
-}
-
-.question 
-{
-    padding: 0.3em 1em 0.4em 1em;
-    margin: 0.1em 0 0 0;
-    border: 1px solid #bbb;
-    background-color: #ddd;
-}
-
-.voteCast 
-{
-    background-color: #eee;
-}
-
-fieldset 
-{
-    padding: 1em 1em 1em 1em;
-    margin: 0.1em 0 0 0;
-}
-
-.questionCount 
-{
-    border: 2px solid gray;
-    padding: .1em .2em .1em .2em;
-    font-size: 1.8em;
-    font-weight: bold;
-    background-color: White;
-    margin: 0 .4em 0 0;
-}
-
-.questionText 
-{
-    font-size: 1.6em;
-}
-
-h2 
-{
-    font-size: 1.7em;
 }

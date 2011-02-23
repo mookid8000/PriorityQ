@@ -9,7 +9,7 @@ namespace Web.ViewModel
     {
         public SessionViewModel(Session session, UserSession currentUserSession)
         {
-            Id = session.Id.ToString();
+            SessionId = session.Id.ToString();
             Headline = session.Headline;
             Questions = session.Questions
                 .Select((q, index) => new QuestionViewModel(q, index, currentUserSession))
@@ -17,7 +17,7 @@ namespace Web.ViewModel
                 .ToList();
         }
 
-        public string Id { get; set; }
+        public string SessionId { get; set; }
         public string Headline { get; set; }
         public List<QuestionViewModel> Questions { get; set; }
     }
