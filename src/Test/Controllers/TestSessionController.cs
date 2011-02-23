@@ -54,14 +54,12 @@ namespace Test.Controllers
         public void CanSaveNewSession()
         {
             // arrange
-            var now = DateTime.Now;
             var form = new CreateSessionForm
                            {
                                Headline = "Hello there!",
                                Lat = "2.2",
                                Lng = "3.2",
                                ExpirationHours = 24,
-                               LocalTime = now.ToString(),
                            };
             var newObjectId = ObjectId.GenerateNewId();
             FakeDoc.StubId(newObjectId);

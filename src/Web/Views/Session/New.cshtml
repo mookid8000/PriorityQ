@@ -26,7 +26,10 @@ else
     // http://maps.google.com/maps?f=q&source=s_q&hl=da&geocode=&q=%C3%85rhus,+Denmark&aq=0&sll=37.0625,-95.677068&sspn=42.766543,65.742188&ie=UTF8&hq=&hnear=%C3%85rhus,+Danmark&z=12
 
     function getPoint() {
-        return { lat: $('#lat').val(), lng: $('#lng').val() };
+        return {
+            lat: $('#lat').val(), 
+            lng: $('#lng').val() 
+        };
     }
 
     function setPoint(point) {
@@ -37,15 +40,15 @@ else
     function initialize(coords) {
         if (GBrowserIsCompatible()) {
             map = new GMap2(document.getElementById("map_canvas"));
+            geocoder = new GClientGeocoder();
+            map.addControl(new GSmallMapControl());
 
             if (coords) {
-                map.setCenter(new GLatLng(coords.latitude, coords.longitude), defaultZoom);
+                map.setCenter(new GLatLng(coords.lat, coords.lng), defaultZoom);
+                showPosition({ latitude: coords.lat, longitude: coords.lng });
             } else {
                 map.setCenter(centerOfTheWorld, defaultZoom);
             }
-
-            map.addControl(new GSmallMapControl());
-            geocoder = new GClientGeocoder();
         } else {
             $('#geoStuff').hide();
         }
@@ -69,10 +72,7 @@ else
             showPosition({ latitude: newCoords.lat(), longitude: newCoords.lng() });
         });
 
-        var lat = point.lat();
-        var lng = point.lng();
-
-        setPoint({ lat: lat, lng: lng });
+        setPoint({ lat: point.lat(), lng: point.lng() });
     }
 
     function showPosition(coords) {
@@ -112,13 +112,18 @@ else
         });
     }
 
-    function getTimeString(time) {
-        return time.getDate() + '-' + (time.getMonth() + 1) + '-' + time.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+    function isNumberNotZero(o) {
+        return !isNaN(o - 0) && o != 0;
     }
 
     $(function () {
-        if (navigator.geolocation) {
-            navigator.geolocation.watchPosition(function (position) {
+        var point = getPoint();
+
+        if (isNumberNotZero(point.lat)) {
+            initialize(point);
+            return;
+        } else if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 showPosition(position.coords);
 
                 $('#headline').focus();
@@ -127,17 +132,7 @@ else
             });
         }
 
-        var timeString = getTimeString(new Date());
-
-        $('#expirationTime').val(timeString);
-
         $('#headline').focus();
-
-        $('#expirationDate').calendricalDate();
-        $('#expirationTime').calendricalTime();
-
-        var lat = $('#lat').val();
-        var lng = $('#lng').val();
 
         initialize();
     });
@@ -172,10 +167,10 @@ else
             </p> 
 
             <div id="map_canvas" />
-
-            @Html.Hidden("lat")
-            @Html.Hidden("lng")
         </div>
+
+        @Html.Hidden("lat")
+        @Html.Hidden("lng")
 
         <p>
             This session will expire @Html.TextBox("expirationHours") hours from now.

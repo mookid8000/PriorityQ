@@ -27,8 +27,6 @@ namespace Web.Forms
             }
         }
 
-        public string LocalTime { get; set; }
-
         [Range(1, 48)]
         public int ExpirationHours { get; set; }
     }

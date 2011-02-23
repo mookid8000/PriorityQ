@@ -19,12 +19,7 @@ namespace Web.Controllers
         [HttpGet]
         public ViewResult New()
         {
-            var expirationTime = Time.Now() + 2.Hours();
-            var timeOfDay = expirationTime.TimeOfDay;
-            var date = expirationTime.Date;
-            var form = new CreateSessionForm {ExpirationHours = 3};
-
-            return View("new", form);
+            return View("New", new CreateSessionForm {ExpirationHours = 3});
         }
 
         [HttpPost]
