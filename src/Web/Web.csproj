@@ -72,6 +72,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Infrastructure\App.cs" />
     <Compile Include="Infrastructure\AppEnvironment.cs" />
     <Compile Include="Infrastructure\AppEnvironmentHelperFromAppSettings.cs" />
@@ -181,6 +182,7 @@
     <None Include="Scripts\calendrical\calendrical.scss" />
     <None Include="Scripts\calendrical\LICENSE" />
     <None Include="Scripts\calendrical\README.md" />
+    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

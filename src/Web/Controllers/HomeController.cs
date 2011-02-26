@@ -27,5 +27,10 @@ namespace Web.Controllers
 
             return View(new SessionIndexViewModel(sessionHeadlines, sessionCount, firstSessionToShow, sessionsPerPage));
         }
+
+        public ViewResult Test()
+        {
+            return View();
+        }
     }
 }

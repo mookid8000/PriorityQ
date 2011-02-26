@@ -1,0 +1,13 @@
+﻿@using Web.Extensions
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.GMaps().Map(new LocationFields("lat", "lng"))
+
+<p>
+    Coordinates: <input type="text" id="lat" />, <input type="text" id="lng" />
+</p>
+
+<div id="map" style="width: 300px; height: 300px;" />
