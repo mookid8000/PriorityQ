@@ -10,3 +10,5 @@ _ReSharper.*
 *.suo
 *.cache
 ~$*
+*.userprefs
+*.pidb
