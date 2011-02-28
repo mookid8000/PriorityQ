@@ -126,7 +126,6 @@
     <Compile Include="ViewModel\SessionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\calendrical.css" />
     <Content Include="Content\img\back.png" />
     <Content Include="Content\img\logo-small.png" />
     <Content Include="Content\img\logo.png" />
@@ -196,6 +195,7 @@
     <None Include="Scripts\calendrical\LICENSE" />
     <None Include="Scripts\calendrical\README.md" />
     <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Home\Locate.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

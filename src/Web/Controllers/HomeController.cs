@@ -28,6 +28,11 @@ namespace Web.Controllers
             return View(new SessionIndexViewModel(sessionHeadlines, sessionCount, firstSessionToShow, sessionsPerPage));
         }
 
+        public ViewResult Locate()
+        {
+            return View();
+        }
+
         public ViewResult Test()
         {
             return View();
