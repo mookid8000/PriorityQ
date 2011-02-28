@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading;
 using Castle.Core;
 using NUnit.Framework;
 using Shouldly;
@@ -16,7 +15,7 @@ namespace Test.Repositories
         {
             return new SessionRepository(CollectionFor<Session>());
         }
-
+        
         [Test]
         public void CanCountSessions()
         {

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq;
 using MongoDB.Bson;
 
 namespace Web.Extensions
@@ -14,6 +16,13 @@ namespace Web.Extensions
             {
                 return new ObjectId();
             }
+        }
+
+        public static string JoinToString(this IEnumerable enumerable, string separator)
+        {
+            return string.Join(separator, enumerable.Cast<object>()
+                                              .Select(i => i == null ? "(null)" : i.ToString())
+                                              .ToArray());
         }
     }
 }
