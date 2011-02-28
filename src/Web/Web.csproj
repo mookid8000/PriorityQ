@@ -85,7 +85,9 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\GoogleMapsHelper.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Extensions\LocationFields.cs" />
     <Compile Include="Infrastructure\App.cs" />
     <Compile Include="Infrastructure\AppEnvironment.cs" />
     <Compile Include="Infrastructure\AppEnvironmentHelperFromAppSettings.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Repositories\SessionRepository.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="ViewModel\SessionViewModel.cs" />
+    <Compile Include="WindsorControllerFactory.asax.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\img\back.png" />

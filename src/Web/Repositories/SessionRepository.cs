@@ -54,23 +54,44 @@ namespace Web.Repositories
             return result["Questions"].AsBsonArray[0].AsBsonDocument["Votes"].AsInt32;
         }
 
-        public IList<SessionHeadline> GetAllSessions(int first, int count, DateTime expirationTime)
-        {
-            return coll.FindAs<BsonDocument>(Query.GTE("ExpirationTime", expirationTime))
-                .SetFields(Fields.Include("Headline", "QuestionCount"))
-                .Skip(first).Take(count)
-                .Select(d => new SessionHeadline
-                                 {
-                                     Id = d["_id"].AsObjectId,
-                                     Headline = d["Headline"].AsString,
-                                     QuestionCount = d["QuestionCount", 0].AsInt32,
-                                 })
-                .ToList();
-        }
-
         public long CountAllSessions(DateTime expirationTime)
         {
             return coll.Count(Query.GTE("ExpirationTime", expirationTime));
+        }
+
+        public IList<SessionHeadline> GetAllSessions(int first, int count, DateTime expirationTime)
+        {
+            return coll.FindAs<BsonDocument>(Query.GTE("ExpirationTime", expirationTime))
+                .SetFields(SessionHeadlineDoc.Fields)
+                .Skip(first).Take(count)
+                .Select(SessionHeadlineDoc.Create)
+                .ToList();
+        }
+
+        public IList<SessionHeadline> SearchRadius(double latitude, double longitude, double radius)
+        {
+            return coll.FindAs<BsonDocument>(Query.WithinCircle("Location", latitude, longitude, radius))
+                .SetFields(SessionHeadlineDoc.Fields)
+                .Select(SessionHeadlineDoc.Create)
+                .ToList();
+        }
+
+        class SessionHeadlineDoc
+        {
+            public static SessionHeadline Create(BsonDocument d)
+            {
+                return new SessionHeadline
+                           {
+                               Id = d["_id"].AsObjectId,
+                               Headline = d["Headline"].AsString,
+                               QuestionCount = d["QuestionCount", 0].AsInt32,
+                           };
+            }
+
+            public static string[] Fields
+            {
+                get { return new[] { "Headline", "QuestionCount" }; }
+            }
         }
     }
 }

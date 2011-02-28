@@ -13,5 +13,6 @@ namespace Web.Repositories
         void AddQuestion(ObjectId asObjectId, Question question);
         IList<SessionHeadline> GetAllSessions(int first, int count, DateTime expirationTime);
         long CountAllSessions(DateTime expirationTime);
+        IList<SessionHeadline> SearchRadius(double latitude, double longitude, double radius);
     }
 }

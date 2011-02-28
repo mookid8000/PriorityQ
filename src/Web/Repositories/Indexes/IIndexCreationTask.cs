@@ -2,6 +2,6 @@
 {
     public interface IIndexCreationTask
     {
-        void Create();
+        void Execute();
     }
 }

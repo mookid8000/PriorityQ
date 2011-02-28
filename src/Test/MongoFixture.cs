@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Web.Infrastructure;
 using Web.Installers;
 using Web.Models;
+using Web.Repositories.Indexes;
 
 namespace Test
 {
@@ -54,9 +55,25 @@ namespace Test
 
             dropCollections = true;
 
+            ExecuteIndexCreationTasks();
+
             sut = Create();
 
             DoSetUp();
+        }
+
+        void ExecuteIndexCreationTasks()
+        {
+            var indexTasks =
+                new[]
+                    {
+                        new SessionLocationIndex(CollectionFor<Session>()),
+                    };
+
+            foreach(var task in indexTasks)
+            {
+                task.Execute();
+            }
         }
 
         [TearDown]

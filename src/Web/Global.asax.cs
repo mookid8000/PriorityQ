@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
@@ -7,7 +7,7 @@ using Web.Repositories.Indexes;
 
 namespace Web
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         IWindsorContainer container;
 
@@ -20,11 +20,9 @@ namespace Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-            );
+            routes.MapRoute("Default",
+                            "{controller}/{action}/{id}",
+                            new {controller = "Home", action = "Index", id = UrlParameter.Optional});
 
         }
 
@@ -37,43 +35,26 @@ namespace Web
 
             container = new WindsorContainer().Install(FromAssembly.This());
 
+            ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(container));
+
+            RunIndexCreationTasks();
+        }
+
+        void RunIndexCreationTasks()
+        {
             var indexCreationTasks = container.ResolveAll<IIndexCreationTask>();
 
             foreach(var task in indexCreationTasks)
             {
-                task.Create();
+                task.Execute();
 
                 container.Release(task);
             }
-
-            ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(container));
         }
 
         protected void Application_End()
         {
             container.Dispose();
-        }
-    }
-
-    public class WindsorControllerFactory : DefaultControllerFactory
-    {
-        readonly IWindsorContainer container;
-
-        public WindsorControllerFactory(IWindsorContainer container)
-        {
-            this.container = container;
-        }
-
-        protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
-        {
-            return controllerType == null
-                       ? base.GetControllerInstance(requestContext, controllerType)
-                       : (IController) container.Resolve(controllerType);
-        }
-
-        public override void ReleaseController(IController controller)
-        {
-            container.Release(controller);
         }
     }
 }

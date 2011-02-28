@@ -15,7 +15,37 @@ namespace Test.Repositories
         {
             return new SessionRepository(CollectionFor<Session>());
         }
-        
+
+        [Test]
+        public void CanFindSessionWithinGivenRadius()
+        {
+            // arrange
+            NewSession("1", 10, 10);
+            NewSession("2", 12, 10);
+            NewSession("3", 14, 10);
+            NewSession("4", 15, 10);
+
+            // act
+            var sessions = sut.SearchRadius(10, 10, 4.5)
+                .OrderBy(s => s.Headline)
+                .ToList();
+
+            // assert
+            sessions.Count.ShouldBe(3);
+            sessions[0].Headline.ShouldBe("1");
+            sessions[1].Headline.ShouldBe("2");
+            sessions[2].Headline.ShouldBe("3");
+        }
+
+        void NewSession(string headline, double latitude, double longitude)
+        {
+            CollectionFor<Session>()
+                .Insert(new Session(headline, "joe")
+                            {
+                                Location = new Location(latitude.ToString(), longitude.ToString())
+                            });
+        }
+
         [Test]
         public void CanCountSessions()
         {

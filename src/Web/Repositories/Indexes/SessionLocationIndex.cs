@@ -13,7 +13,7 @@ namespace Web.Repositories.Indexes
             this.collection = collection;
         }
 
-        public void Create()
+        public void Execute()
         {
             collection.CreateIndex(IndexKeys.GeoSpatial("Location"));
         }
