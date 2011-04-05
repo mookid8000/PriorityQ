@@ -68,9 +68,12 @@ namespace Web.Repositories
                 .ToList();
         }
 
-        public IList<SessionHeadline> SearchRadius(double latitude, double longitude, double radius)
+        public IList<SessionHeadline> SearchRadius(double latitude, double longitude, double radius, DateTime expirationTime)
         {
-            return coll.FindAs<BsonDocument>(Query.WithinCircle("Location", latitude, longitude, radius))
+            var localtionCriteria = Query.WithinCircle("Location", latitude, longitude, radius);
+            var expirationCriteria = Query.GTE("ExpirationTime", expirationTime);
+
+            return coll.FindAs<BsonDocument>(Query.And(localtionCriteria, expirationCriteria))
                 .SetFields(SessionHeadlineDoc.Fields)
                 .Select(SessionHeadlineDoc.Create)
                 .ToList();

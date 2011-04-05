@@ -26,7 +26,7 @@ namespace Test.Repositories
             NewSession("4", 15, 10);
 
             // act
-            var sessions = sut.SearchRadius(10, 10, 4.5)
+            var sessions = sut.SearchRadius(10, 10, 4.5, DateTime.Now)
                 .OrderBy(s => s.Headline)
                 .ToList();
 

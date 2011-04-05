@@ -3,11 +3,18 @@
     Layout = "~/Views/Shared/_Bare.cshtml";
 }
 
-<ul>
-    @foreach (var session in Model.SessionHeadlines)
-    {
-        <li>
-            <a href="@Url.Action("show", "session", new { Id = @session.Id })">@session.Headline</a>
-        </li>
-    }
-</ul>
+@if (Model.SessionHeadlines.Count == 0)
+{
+    <p>There doesn't seem to be any ongoing sessions in your vicinity.</p>
+}
+else
+{
+    <ul>
+        @foreach (var session in Model.SessionHeadlines)
+        {
+            <li>
+                <a href="@Url.Action("show", "session", new { Id = @session.Id })">@session.Headline</a>
+            </li>
+        }
+    </ul>
+}
