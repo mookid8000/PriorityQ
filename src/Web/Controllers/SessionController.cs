@@ -10,6 +10,8 @@ namespace Web.Controllers
 {
     public class SessionController : BaseController
     {
+        const double SearchRadius = .05;
+
         readonly ISessionRepository sessionRepository;
 
         public SessionController(ISessionRepository sessionRepository)
@@ -81,7 +83,7 @@ namespace Web.Controllers
             var longitude = double.Parse(lng, CultureInfo.InvariantCulture);
             var now = Time.Now();
 
-            var sessionHeadlines = sessionRepository.SearchRadius(latitude, longitude, .1, now);
+            var sessionHeadlines = sessionRepository.SearchRadius(latitude, longitude, SearchRadius, now);
 
             return View(new SessionsInVicinityViewModel(sessionHeadlines));
         }
