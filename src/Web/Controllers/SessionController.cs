@@ -81,7 +81,7 @@ namespace Web.Controllers
             var longitude = double.Parse(lng, CultureInfo.InvariantCulture);
             var now = Time.Now();
 
-            var sessionHeadlines = sessionRepository.SearchRadius(latitude, longitude, 1, now);
+            var sessionHeadlines = sessionRepository.SearchRadius(latitude, longitude, .1, now);
 
             return View(new SessionsInVicinityViewModel(sessionHeadlines));
         }
