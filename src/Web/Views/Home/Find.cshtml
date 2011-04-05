@@ -28,13 +28,17 @@
     $(function () { lookUpSessionsNear(); });
 </script>
 
-<p>Looking for ongoing sessions in your vicinity...</p>
+<div>
+    <p>Looking for ongoing sessions in your vicinity...</p>
+</div>
 
 <div id="sessionsNear"></div>
 <div id="lookupText"></div>
 
-<p>
-    Didn't find what you were looking for? 
-    Either @Html.ActionLink("go to the index of ongoing sessions", "index", "home")
-    or @Html.ActionLink("create a new session", "new", "session")...
-</p>
+<div>
+    <p>
+        Didn't find what you were looking for? 
+        Either @Html.ActionLink("go to the index of ongoing sessions", "index", "home")
+        or @Html.ActionLink("create a new session", "new", "session")...
+    </p>
+</div>
