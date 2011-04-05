@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Web.Mvc;
 using Web.Extensions;
 using Web.Forms;
@@ -71,6 +72,17 @@ namespace Web.Controllers
             }
 
             return RedirectToAction("show", "session", new { id = sessionId });
+        }
+ 
+        [HttpPost]
+        public ViewResult FindNear(string lat, string lng)
+        {
+            var latitude = double.Parse(lat, CultureInfo.InvariantCulture);
+            var longitude = double.Parse(lng, CultureInfo.InvariantCulture);
+
+            var sessionHeadlines = sessionRepository.SearchRadius(latitude, longitude, 1);
+
+            return View(new SessionsInVicinityViewModel(sessionHeadlines));
         }
     }
 }

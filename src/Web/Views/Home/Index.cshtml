@@ -6,7 +6,7 @@
 
 @if (Model.SessionHeadlines.Count == 0)
 {
-    <p>There doesn't seem to be any ongoing sessions in your vicinity.</p>
+    <p>There doesn't seem to be any ongoing sessions.</p>
     <p>How about @Html.ActionLink("creating a new one?", "new", "session")</p>
 }
 else
@@ -47,3 +47,5 @@ else
 
     <p>- or @Html.ActionLink("create a new one", "new", "session")...</p>
 }
+
+<p>You can also @Html.ActionLink("look for ongoing sessions in your vicinity", "find", "home").</p>

@@ -1,4 +1,3 @@
-using System;
 using System.Web.Mvc;
 using Web.Models;
 using Web.Repositories;
@@ -26,6 +25,11 @@ namespace Web.Controllers
             var sessionCount = sessionRepository.CountAllSessions(now);
 
             return View(new SessionIndexViewModel(sessionHeadlines, sessionCount, firstSessionToShow, sessionsPerPage));
+        }
+
+        public ViewResult Find()
+        {
+            return View();
         }
 
         public ViewResult Locate()

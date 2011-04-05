@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Find ongoing sessions near you";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function displayText(text) {
+        $('#lookupText').html('<p>' + text + '</p>');
+    }
+
+    function loadSessionsNear(position) {
+        var coords = position.coords;
+        $('#sessionsNear').load('/session/findNear', {lat: coords.latitude, lng: coords.longitude});
+    }
+
+    function lookUpSessionsNear() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(loadSessionsNear, function () {
+                displayText('We\'re terribly sorry, but an error happened while trying to determine your current position. Please try again.');
+            });
+        } else {
+            displayText('We\'re terribly sorry, but it seems your browser isn\'t capable of determining your current position.');
+        }
+    }
+
+
+
+    $(function () { lookUpSessionsNear(); });
+</script>
+
+<p>Looking for ongoing sessions in your vicinity...</p>
+
+<div id="sessionsNear" />
+<div id="lookupText" />
+
+<p>
+    Didn't find what you were looking for? 
+    Either @Html.ActionLink("go to the index of ongoing sessions", "index", "home")
+    or @Html.ActionLink("create a new session", "new", "session")...
+</p>

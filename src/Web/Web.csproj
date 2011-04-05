@@ -125,6 +125,7 @@
     <Compile Include="Models\SessionHeadline.cs" />
     <Compile Include="Repositories\SessionRepository.cs" />
     <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="ViewModel\SessionsInVicinityViewModel.cs" />
     <Compile Include="ViewModel\SessionViewModel.cs" />
     <Compile Include="WindsorControllerFactory.asax.cs" />
   </ItemGroup>
@@ -199,6 +200,9 @@
     <None Include="Scripts\calendrical\README.md" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\Locate.cshtml" />
+    <Content Include="Views\Home\Find.cshtml" />
+    <Content Include="Views\Shared\_Bare.cshtml" />
+    <Content Include="Views\Session\FindNear.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
