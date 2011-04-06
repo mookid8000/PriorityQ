@@ -4,22 +4,33 @@
 }
 
 <script type="text/javascript">
-    function displayText(text) {
+    function displayLookupText(text) {
         $('#lookupText').html('<p>' + text + '</p>');
+    }
+
+    function displayActivityText(text) {
+        $('#activityText').html('<p>' + text + '</p>');
     }
 
     function loadSessionsNear(position) {
         var coords = position.coords;
-        $('#sessionsNear').load('/session/findNear', {lat: coords.latitude, lng: coords.longitude});
+        $('#sessionsNear').load('/session/findNear', {
+            lat: coords.latitude,
+            lng: coords.longitude
+        }, function () {
+            displayActivityText('');
+        });
     }
 
     function lookUpSessionsNear() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(loadSessionsNear, function () {
-                displayText('We\'re terribly sorry, but an error happened while trying to determine your current position. Please try again.');
+                displayLookupText('We\'re terribly sorry, but an error happened while trying to determine your current position. Please try again.');
+                displayActivityText('');
             });
         } else {
-            displayText('We\'re terribly sorry, but it seems your browser isn\'t capable of determining your current position.');
+            displayLookupText('We\'re terribly sorry, but it seems your browser isn\'t capable of determining your current position.');
+            displayActivityText('');
         }
     }
 
@@ -28,11 +39,14 @@
     $(function () { lookUpSessionsNear(); });
 </script>
 
-<div>
+<div id="activityText">
     <p>Looking for ongoing sessions in your vicinity...</p>
 </div>
 
-<div id="sessionsNear"></div>
+<div id="sessionsNear">
+    <div style="text-align: center;"><img src="@Url.Content("~/Content/img/spinner.gif")" /></div>
+</div>
+
 <div id="lookupText"></div>
 
 <div>
