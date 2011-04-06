@@ -22,15 +22,20 @@
         });
     }
 
+    function clearOtherStuff() {
+        displayActivityText('');
+        $('#sessionsNear').html('');
+    }
+
     function lookUpSessionsNear() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(loadSessionsNear, function () {
                 displayLookupText('We\'re terribly sorry, but an error happened while trying to determine your current position. Please try again.');
-                displayActivityText('');
+                clearOtherStuff();
             });
         } else {
             displayLookupText('We\'re terribly sorry, but it seems your browser isn\'t capable of determining your current position.');
-            displayActivityText('');
+            clearOtherStuff();
         }
     }
 
