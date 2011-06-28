@@ -19,7 +19,7 @@ namespace Test
         bool dropCollections;
         MongoServer mongoServer;
         MongoDatabase mongoDatabase;
-        MongoConfigurationFromAppSettings settings;
+        //MongoConfigurationFromAppSettings settings;
 
         protected MongoCollection<T> CollectionFor<T>()
         {
@@ -33,9 +33,13 @@ namespace Test
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
-            settings = new MongoConfigurationFromAppSettings(this);
-            mongoServer = MongoServer.Create(settings.ConnectionString);
+            mongoServer = MongoServer.Create(MongoUri());
             mongoServer.Connect();
+        }
+
+        Uri MongoUri()
+        {
+            return new Uri(ConfigurationManager.AppSettings["MONGOHQ_URL"]);
         }
 
         [TestFixtureTearDown]
@@ -51,7 +55,7 @@ namespace Test
 
             accessedCollections = new HashSet<string>();
 
-            mongoDatabase = mongoServer.GetDatabase(settings.DatabaseName);
+            mongoDatabase = mongoServer.GetDatabase(MongoUri().LocalPath.TrimStart('/'));
 
             dropCollections = true;
 

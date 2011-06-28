@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using Castle.MicroKernel;
@@ -24,7 +24,7 @@ namespace Web.Installers
                               .WithService.Base(),
 
                           Component.For<MongoServer>()
-                              .UsingFactoryMethod(CreateMongoServer)
+                              .UsingFactoryMethod(k => MongoServer.Create(MongoUri()))
                               .OnCreate((k, s) => s.Connect())
                               .LifeStyle.Singleton,
 
@@ -35,21 +35,20 @@ namespace Web.Installers
                               .LifeStyle.Singleton);
         }
 
-        MongoServer CreateMongoServer(IKernel kernel)
+        Uri MongoUri()
         {
-            return MongoServer.Create(kernel.Resolve<IMongoConfiguration>().ConnectionString);
+            return new Uri(ConfigurationManager.AppSettings["MONGOHQ_URL"]);
         }
 
         MongoDatabase GetMongoDatabase(IKernel kernel)
         {
-            return kernel.Resolve<MongoServer>()
-                .GetDatabase(kernel.Resolve<IMongoConfiguration>().DatabaseName);
+            return kernel.Resolve<MongoServer>().GetDatabase(MongoUri().LocalPath);
         }
     }
 
     public class MongoCollectionComponentLoader : ILazyComponentLoader
     {
-        ConcurrentDictionary<Type, MethodInfo> factoryMethodCache = new ConcurrentDictionary<Type, MethodInfo>();
+        readonly ConcurrentDictionary<Type, MethodInfo> factoryMethodCache = new ConcurrentDictionary<Type, MethodInfo>();
 
         public IRegistration Load(string key, Type service, IDictionary arguments)
         {
@@ -83,9 +82,7 @@ namespace Web.Installers
                     .Single(m => m.Name == "GetCollection"
                                  && m.IsGenericMethod
                                  && m.GetParameters().Length == 1
-                                 && m.GetParameters()
-                                        .Single().ParameterType ==
-                                 typeof (string))
+                                 && m.GetParameters().Single().ParameterType == typeof (string))
                     .MakeGenericMethod(documentType);
 
                 factoryMethodCache.TryAdd(documentType, methodInfoToReturn);
