@@ -42,7 +42,7 @@ namespace Web.Installers
 
         MongoDatabase GetMongoDatabase(IKernel kernel)
         {
-            return kernel.Resolve<MongoServer>().GetDatabase(MongoUri().LocalPath);
+            return kernel.Resolve<MongoServer>().GetDatabase(MongoUri().LocalPath.TrimStart('/'));
         }
     }
 
